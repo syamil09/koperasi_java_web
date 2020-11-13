@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Karyawan</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+        <script type="text/javascript" src="karyawan.js"></script>
+    </head>
+    <body>
+        <div class="container">
+                <div class="row">
+                        <div class="col-md-10">
+                                <h1 class="mt-3 text-center">Data Karyawan</h1>
+                                <a href="#" id="btnAdd" class="btn btn-primary mb-3" data-toggle="modal">Tambah Data</a> 
+                                <table class="table bg-white" id="tabelkaryawan">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                    <th scope="col">NIK</th>
+                                                    <th scope="col">Nama</th>
+                                                    <th scope="col">Jenis Kelamin</th>
+                                                    <th scope="col">Tmp Lahir</th>
+                                                    <th scope="col">Tgl Lahir</th>
+                                                    <th scope="col">Telepon</th>
+                                                    <th scope="col">Aksi</th>
+                                            </tr>     
+                                        </thead>
+                                        <tbody id="dataTable">
+
+                                        </tbody>
+                                </table>
+                        </div>
+              </div>
+        </div>
+        
+        <div class="modal" id="myModal">
+            <div class="modal-dialog container">
+                <div class="modal-content">
+                    
+                    <div class="modal-header bg-primary">
+                        <font style="color: #ffffff">
+                            <h4 class="modal-title" data-toggle='modal' id="titel1">
+                                TAMBAH DATA
+                            </h4>
+                            <h4 class="modal-title" data-toggle='modal' id="titel2">
+                                EDIT DATA 
+                            </h4>
+                        </font>
+                    </div>
+
+                    <div class="modal-body modal-lg">
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <label for="nik" class="col-sm-4 col-form-label">NOMOR INDUK</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="nik" placeholder="Nomor Induk">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="nama" class="col-sm-4 col-form-label">NAMA</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="nama" placeholder="Nama Karyawan">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="gender" class="col-sm-4 col-form-label">Gender</label>
+                                <div class="col-sm-5">
+                                    <select id="gender" class="form-control">
+                                        <option value="">- pilih -</option>
+                                        <option value="L">Laki-Laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tmplahir" class="col-sm-4 col-form-label">Tempat Lahir</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="tmpLahir" placeholder="Tempat Lahir">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tgllahir" class="col-sm-4 col-form-label">Tanggal Lahir</label>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="tglLahir" placeholder="Tanggal Lahir">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat" class="col-sm-4 col-form-label">Alamat</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="alamat" placeholder="Alamat">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="telepon" class="col-sm-4 col-form-label">Telepon</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="telepon" placeholder="Telepon">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnSave">Simpan</button>
+                        <button type="button" class="btn btn-danger" id="btnCancel">&nbsp; Batal &nbsp;</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </body>
+    
+</html>
