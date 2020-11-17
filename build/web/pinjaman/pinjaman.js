@@ -115,6 +115,7 @@ $(document).ready(function() {
                 $("#titel1").show();
                 $("#titel2").hide();
                 $("#nik").prop('disabled', false);
+                $("input[name=persenBunga]").val('10');
                 page="tambah";
                 console.log("add");
         });    
@@ -212,7 +213,15 @@ $(document).ready(function() {
                             {'data': 'bungaPinjamanRp'},
                             {'data': 'lamaPinjaman'},
                             {'data': 'angsurPokokRp'},
-                            {'data': 'angsurBungaRp'},
+                            {
+                                data: 'angsurBunga',
+                                defaultContent: '',
+                                render: {
+                                    display: function(data, type , row) {
+                                        return formatRupiah(data.toString(), 'Rp. ');
+                                    }
+                                }
+                            },
                             {'data': 'namaKaryawan',  'searchable': false},
                             {'data': null, 'className': 'dt-right', 'orderable': false, 'mRender': function(o){
                                     return "<a class='btn btn-outline-warning btn-sm'"
@@ -278,6 +287,8 @@ $(document).ready(function() {
                         $("#namaKaryawan").val(data.namaKaryawan);
                         $("#pokokPinjamanRp").val(formatRupiah(data.pokokPinjaman.toString(), "Rp. "));
                         $("#bungaPinjamanRp").val(formatRupiah(data.bungaPinjaman.toString(), "Rp. "));
+                        $("#angsurPokokRp").val(formatRupiah(data.angsurPokok.toString(), "Rp. "));
+                        $("#angsurBungaRp").val(formatRupiah(data.angsurBunga.toString(), "Rp. "));
                  });
                  page = "edit";
                 
@@ -301,50 +312,80 @@ $(document).ready(function() {
           return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
         }
         
+        // fungsi angsuran pokok
         function angsuranPokok(pokok, lama) {
             // bulatkan keatas dalam bentuk ratusan
             let angsur = Math.ceil(parseInt(pokok) / parseInt(lama) / 100) * 100;
-            if (!isNaN(angsur)) {
+            if (!isNaN(angsur) && isFinite(angsur)) {
                 $("input[name=angsurPokok]").val(angsur);
+                $("#angsurPokokRp").val(formatRupiah(angsur.toString(), "Rp. "));
             } else {
                 $("input[name=angsurPokok]").val('');
+                $("#angsurPokokRp").val(formatRupiah(angsur.toString(), "Rp. "));
             }    
-            return 'angsuran pokok'+angsur;
+            console.log('angsuran pokok : '+angsur)
         }
         
+        // fungsi angsuran bunga
         function angsuranBunga(bunga, lama) {
             // bulatkan keatas dalam bentuk ratusan
             let angsur = Math.ceil(parseInt(bunga) / parseInt(lama) / 100) * 100;
-            if (!isNaN(angsur)) {
+            if (!isNaN(angsur) && isFinite(angsur) && angsur != 0) {
                 $("input[name=angsurBunga]").val(angsur);
+                $("#angsurBungaRp").val(formatRupiah(angsur.toString(), "Rp. "));
             } else {
                 $("input[name=angsurBunga]").val('');
+                $("#angsurBungaRp").val('');
             }
-            return 'angsuran bunga'+angsur;
+            console.log('angsur bunga : '+angsur);
         }
+        
+        // fungsi pokok bunga
+        function pokokBunga(pokok, lama, persen) {
+//            let bunga = Math.ceil( (lama/12) * pokok * (persen/100) );
+            let bunga = ( (lama/12) * pokok * (persen/100) );
+            bunga = Number.isInteger(bunga) ? bunga : bunga.toFixed(2); 
+            
+            if (!isNaN(bunga) && isFinite(bunga) && bunga != 0) {
+                $("input[name=bungaPinjaman]").val(bunga);
+                $("#bungaPinjamanRp").val(formatRupiah(bunga.toString().replace('.', ','), "Rp. "));
+                angsuranBunga(bunga, lama);
+            } else {
+                $("input[name=bungaPinjaman]").val('');
+                $("#bungaPinjamanRp").val('');
+                $("input[name=angsurBunga]").val('');
+                $("#angsurBungaRp").val('');
+            }
+            // jalankan fungsi angsuran pokok
+            angsuranPokok(pokok, lama);
+            console.log("bunga : "+bunga);
+        }
+        
+        $("input[name=persenBunga]").on('input', function() {
+            pokokBunga(
+                    $("input[name=pokokPinjaman]").val(),
+                    $("input[name=lamaPinjaman]").val(),
+                    this.value
+                    );
+        });
         
         $("input[name=pokokPinjaman]").on('input', function() {
             let rp = formatRupiah(this.value, "RP. ");
             $("#pokokPinjamanRp").val(rp);
-            angsuranPokok(this.value, $("input[name=lamaPinjaman]").val());
-        });
-        
-        $("input[name=pokokBunga]").on('input', function() {
-            let rp = formatRupiah(this.value, "RP. ");
-            $("#pokokPinjamanRp").val(rp);
-            angsuranPokok(this.value, $("input[name=lamaPinjaman]").val());
-        });
-        
-        $("input[name=bungaPinjaman]").on('input', function() {
-            let rp = formatRupiah(this.value, "RP. ");
-            $("#bungaPinjamanRp").val(rp);
-            angsuranBunga(this.value, $("input[name=lamaPinjaman]").val());
+//            angsuranPokok($("input[name=pokokBunga]").val(), $("input[name=lamaPinjaman]").val());
+            pokokBunga(
+                    this.value,
+                    $("input[name=lamaPinjaman]").val(),
+                    $("input[name=persenBunga]").val()
+                    );
         });
         
         $("input[name=lamaPinjaman]").on('input', function() {
-            angsuranPokok($("input[name=pokokPinjaman]").val(), this.value);
-            console.log("length : "+$(this).val().length);
-            angsuranBunga($("input[name=bungaPinjaman]").val(), this.value);
+            pokokBunga(
+                    $("input[name=pokokPinjaman]").val(),
+                    this.value,
+                    $("input[name=persenBunga]").val()
+                    );
         });
         
         // fill name karyawan
@@ -397,6 +438,8 @@ $(document).ready(function() {
                     $("#namaAnggota").val('');
                     $("#bungaPinjamanRp").val('');
                     $("#pokokPinjamanRp").val('');
+                    $("#angsurBungaRp").val('');
+                    $("#angsurPokokRp").val('');
          }
 });
 
