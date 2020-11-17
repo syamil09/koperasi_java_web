@@ -389,7 +389,7 @@ $(document).ready(function() {
         });
         
         // fill name karyawan
-        $("input[name=nikKaryawan]").on('input',function() {
+        $("input[name=nikKaryawan]").blur(function() {
             console.log(this.value)
             $.ajax({
                 url: "/PBO_koperasi/KaryawanCtr",
@@ -407,7 +407,7 @@ $(document).ready(function() {
         });
         
         // fill name  anggota
-        $("input[name=noAnggota]").on('input',function() {
+        $("input[name=noAnggota]").blur(function() {
             console.log(this.value)
             $.ajax({
                 url: "/PBO_koperasi/AnggotaCtr",
