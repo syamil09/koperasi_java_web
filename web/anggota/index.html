@@ -16,6 +16,7 @@ and open the template in the editor.
         <script src="https://cdjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
         <script type="text/javascript" src="index.js"></script>
     </head>
     <body>
@@ -107,7 +108,7 @@ and open the template in the editor.
                             <div class="form-group row">
                                 <label for="tgllahir" class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-6">
-                                    <input type="date" class="form-control" id="tglLahir" placeholder="Tanggal Lahir">
+                                    <input type="text" class="form-control datepicker" id="tglLahir" placeholder="Tanggal Lahir">
                                 </div>
                             </div>
 
@@ -136,7 +137,16 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+        <script>
+        $(document).ready(function() {
+            $(".datepicker").datepicker({
+                endDate: "-17y",
+                format: "yyyy-mm-dd"
+            })
+            
+        });
+    </script>
     </body>
     
 </html>

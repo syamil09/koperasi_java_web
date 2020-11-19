@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import model.Anggota;
 import model.Pinjaman;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
