@@ -116,6 +116,7 @@ $(document).ready(function() {
                 $("#titel2").hide();
                 $("#nik").prop('disabled', false);
                 $("input[name=persenBunga]").val('10');
+                $("input[name=noPinjaman]").prop('disabled', false);
                 page="tambah";
                 console.log("add");
         });    
@@ -342,9 +343,9 @@ $(document).ready(function() {
         
         // fungsi pokok bunga
         function pokokBunga(pokok, lama, persen) {
-//            let bunga = Math.ceil( (lama/12) * pokok * (persen/100) );
-            let bunga = ( (lama/12) * pokok * (persen/100) );
-            bunga = Number.isInteger(bunga) ? bunga : bunga.toFixed(2); 
+            let bunga = Math.ceil( (lama/12) * pokok * (persen/100) );
+//            let bunga = ( (lama/12) * pokok * (persen/100) );
+//            bunga = Number.isInteger(bunga) ? bunga : bunga.toFixed(2); 
             
             if (!isNaN(bunga) && isFinite(bunga) && bunga != 0) {
                 $("input[name=bungaPinjaman]").val(bunga);

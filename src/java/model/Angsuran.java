@@ -19,6 +19,15 @@ public class Angsuran {
     private String namaKaryawan;
     private String noAnggota;
     private String namaAnggota;
+    private int jumlahAngsur;
+
+    public int getJumlahAngsur() {
+        return jumlahAngsur;
+    }
+
+    public void setJumlahAngsur(int jumlahAngsur) {
+        this.jumlahAngsur = jumlahAngsur;
+    }
     
     public String getNamaKaryawan() {
         return namaKaryawan;

@@ -25,7 +25,16 @@ $.ajax({
                 {data:'angsurKe'},
                 {data:'noAnggota'},
                 {data:'namaAnggota'},
-                {data:'besarAngsur'},
+                {
+                    data:'besarAngsur',
+                    defaultContent: '',
+                    render: {
+                        display: function(data, type, row) {
+                            console.log("besarAngsur : "+data)
+                            return formatRupiah(data.toString(), "Rp. ");
+                        }
+                    }
+                },
                 {data:'sisaPinjaman'},
                 {data:'namaKaryawan'},
                 {'data': null, 'className': 'dt-right', 'orderable': false, 'mRender': function(o){
@@ -53,6 +62,33 @@ $("#btnAdd").click(function(){
         page="tambah";
         console.log("add");
 });    
+
+// Fill data
+function viewData(np, angsurke, type) {
+    $.ajax({
+        url: '/PBO_koperasi/AngsuranCtr',
+        dataType: 'JSON',
+        method: 'POST',
+        data: {
+            page: 'tampil',
+            np: np,
+            angsurKe: angsurke,
+            type: type
+        },
+        success: function(data) {
+//            let sisaPinjaman = ()
+            $("#noAnggota").val(data.noAnggota);
+            $("#namaAnggota").val(data.namaAnggota);
+            $("#besarAngsuran").val(data.besarAngsur);
+            $("#besarAngsuranRp").val( formatRupiah(data.besarAngsur.toString(), 'Rp. ') );
+            $("#angsurKe").val(data.jumlahAngsur);
+            $("#sisaPinjaman").val(data.sisaPinjaman);
+            $("#sisaPinjamanRp").val( formatRupiah(data.sisaPinjaman.toString(), 'Rp. ') );
+            console.log(data);
+        }
+    })
+}
+//viewData("P-12", 1, "edit");
 
 // Function load karyawan
 function loadKaryawan() {
@@ -158,13 +194,33 @@ $("#btn-lookup-pinjaman").click(function() {
             console.log('insert pinjaman');
                 // get nik when clicked btn in the current row
                 let baris = $(this).closest('tr');
-                let no = baris.find("td:eq(0)").text();
+                let nopin = baris.find("td:eq(0)").text();
                 let nama = baris.find("td:eq(1)").text();
-                $("#noAnggota").val(no);
-                $("#namaAnggota").val(nama);
+                viewData(nopin, 0, "add");
+                $("#noPinjaman").val(nopin);
                 $("#modalLookupPinjaman").modal("hide");
         });
 });
 
+
+
+// Format Rupiah
+function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+        split = number_string.split(","),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        
+        return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+}
 })
 

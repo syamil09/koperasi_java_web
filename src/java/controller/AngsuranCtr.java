@@ -47,6 +47,20 @@ public class AngsuranCtr extends HttpServlet {
                 out.println(json);
                 System.out.println("berhasil get all data angsuran : "+json);
             }
+             else if (page.equals("tampil")) {
+                 String jsonAngsuran;
+                 String type = request.getParameter("type");
+                 String np = request.getParameter("np");
+                 
+                 if (type.equals("add")) {
+                        jsonAngsuran = gson.toJson(dao.getRecord(np, 0, "add"));
+                 } else {
+                        jsonAngsuran = gson.toJson(dao.getRecord(np, Integer.valueOf(request.getParameter("angsurKe")), "edit"));
+                 } 
+                 response.setContentType("application/json");
+                 out.println(jsonAngsuran);
+                 System.out.println("np : "+np);
+             }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
