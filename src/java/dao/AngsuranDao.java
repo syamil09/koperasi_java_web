@@ -214,6 +214,20 @@ public class AngsuranDao {
             }
             
         }
+        
+        public void hapusData(String np, int angsurke){
+            String sqlHapus = "DELETE FROM angsuran WHERE nopinjaman=? AND angsurke=?";
+            try{
+                preSmt = koneksi.prepareStatement(sqlHapus);
+                preSmt.setString(1, np);
+                preSmt.setInt(2, angsurke);
+                preSmt.executeUpdate();
+            }
+            catch(SQLException e){
+                System.out.println("error delete data : " + e);
+            }
+        }
+        
         public static void main(String[] args) {
             AngsuranDao dao = new AngsuranDao();
 //            System.out.println(dao.getRecord("P-12", 0, "add").getNoPinjaman());

@@ -66,6 +66,7 @@ $("#btnAdd").click(function(){
         $("#titel1").show();
         $("#titel2").hide();
         $("#noPinjaman").prop('disabled', false);
+        $("#btn-lookup-pinjaman").prop('disabled', false);
         page="tambah";
         console.log("add");
 });    
@@ -74,12 +75,15 @@ $("#btnAdd").click(function(){
 $("#btnSave").click(function() {
     if($("#noPinjaman").val() == "") {
         alert("Nomor Pinjaman Harus Diisi!")
+        $("#noPinjaman").focus()
     }
     else if($("#tglAngsuran").val() == "") {
         alert("Tanggal Angsuran Harus Diisi!")
+        $("#tglAngsuran").focus()
     }
     else if($("#noKaryawan").val() == "") {
         alert("Nomor Karyawan Harus Diisi!")
+        $("#noKaryawan").focus();
     }
     else {
         console.log("page : "+page)
@@ -264,7 +268,25 @@ $("#btn-lookup-pinjaman").click(function() {
         });
 });
 
+$("#noPinjaman").blur(function () {
+    viewData(this.value, 0, "add")
+})
 
+$("#noKaryawan").blur(function () {
+        $.ajax({
+                url: "/PBO_koperasi/KaryawanCtr",
+                method: "GET", 
+                dataType: "json",
+                data: {
+                   page: "tampil",
+                   nik: this.value
+                },
+                success: function(data) {
+                    if (Object.keys(data).length !== 0 && data.constructor === Object) $("#namaKaryawan").val(data.nama);
+                    else $("#namaKaryawan").val('Data tidak ditemukan!');
+                }
+        });
+})
 
 // Format Rupiah
 function formatRupiah(angka, prefix) {
