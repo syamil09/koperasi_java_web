@@ -5,7 +5,7 @@
  */
 $(document).ready(function() {
 
-let noPinjaman, noAnggota, angsurKe, namaAnggota, sisaPinjaman, namaKaryawan;
+let noPinjaman, noAnggota, angsurKe, namaAnggota, sisaPinjaman, namaKaryawan, page;
 
 // get all data
 $.ajax({
@@ -35,7 +35,15 @@ $.ajax({
                         }
                     }
                 },
-                {data:'sisaPinjaman'},
+                {
+                    data:'sisaPinjaman',
+                    defaultContent: '',
+                    render: {
+                        display: function(data, type, row) {
+                            return formatRupiah(data.toString(), "Rp. ");
+                        }
+                    }
+                },
                 {data:'namaKaryawan'},
                 {'data': null, 'className': 'dt-right', 'orderable': false, 'mRender': function(o){
                         return "<a class='btn btn-outline-warning btn-sm'"
@@ -53,15 +61,63 @@ $.ajax({
 
 // Button Add clicked
 $("#btnAdd").click(function(){
-//        clearForm();
+        clearForm();
         $("#modalAdd").modal('show');
         $("#titel1").show();
         $("#titel2").hide();
-        $("#nik").prop('disabled', false);
-        $("input[name=persenBunga]").val('10');
+        $("#noPinjaman").prop('disabled', false);
         page="tambah";
         console.log("add");
 });    
+
+// Save Data
+$("#btnSave").click(function() {
+    if($("#noPinjaman").val() == "") {
+        alert("Nomor Pinjaman Harus Diisi!")
+    }
+    else if($("#tglAngsuran").val() == "") {
+        alert("Tanggal Angsuran Harus Diisi!")
+    }
+    else if($("#noKaryawan").val() == "") {
+        alert("Nomor Karyawan Harus Diisi!")
+    }
+    else {
+        console.log("page : "+page)
+        $.post('/PBO_koperasi/AngsuranCtr', {
+            page: page,
+            noPinjaman: $('#noPinjaman').val(),
+            angsurKe: $('#angsurKe').val(),
+            tglAngsur: $('#tglAngsuran').val(),
+            besarAngsur: $('#besarAngsuran').val(),
+            sisaPinjaman: $('#sisaPinjaman').val(),
+            noKaryawan: $('#noKaryawan').val()
+        }, function(data, status) {
+                alert(data);
+                if (data === "Data Berhasil diupdate" || data === "Data Berhasil disimpan") {location.reload(); }
+        })
+    }
+    
+});
+
+
+// Edit Data
+         $("#tabelangsuran tbody").on("click", "#btnEdit", function() {
+             console.log("edit")
+                $("#modalAdd").modal('show');
+                $("#titel1").hide();
+                $("#titel2").show();
+                $("#noPinjaman").prop('disabled', true);
+                $("#btn-lookup-pinjaman").prop('disabled', true);
+                page = "tampil";
+                
+                let baris = $(this).closest('tr');
+                let np = baris.find("td:eq(0)").text();
+                let angsurke = baris.find("td:eq(1)").text();
+                viewData(np, angsurke, "edit");
+                page = "edit";
+                
+         });
+
 
 // Fill data
 function viewData(np, angsurke, type) {
@@ -84,6 +140,12 @@ function viewData(np, angsurke, type) {
             $("#angsurKe").val(data.jumlahAngsur);
             $("#sisaPinjaman").val(data.sisaPinjaman);
             $("#sisaPinjamanRp").val( formatRupiah(data.sisaPinjaman.toString(), 'Rp. ') );
+            if (type == "edit") {
+                $("#noPinjaman").val(data.noPinjaman);
+                $("#noKaryawan").val(data.noKaryawan);
+                $("#namaKaryawan").val(data.namaKaryawan);
+                $("#tglAngsuran").val(data.tglAngsur);
+            }
             console.log(data);
         }
     })
@@ -218,9 +280,23 @@ function formatRupiah(angka, prefix) {
             rupiah += separator + ribuan.join(".");
         }
 
-        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-        
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;       
         return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+}
+
+// Clear Form
+function clearForm() {
+    $("#noPinjaman").val("");
+    $("#noAnggota").val("");
+    $("#tglAngsuran").val('');
+    $("#angsurKe").val('');
+    $("#namaAnggota").val('');
+    $("#besarAngsuran").val('');
+    $("#besarAngsuranRp").val('Rp. ');
+    $("#sisaPinjaman").val('');
+    $("#sisaPinjamanRp").val('Rp. ');
+    $("#noKaryawan").val('');
+    $("#namaKaryawan").val('');
 }
 })
 

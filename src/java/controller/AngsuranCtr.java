@@ -55,11 +55,37 @@ public class AngsuranCtr extends HttpServlet {
                  if (type.equals("add")) {
                         jsonAngsuran = gson.toJson(dao.getRecord(np, 0, "add"));
                  } else {
-                        jsonAngsuran = gson.toJson(dao.getRecord(np, Integer.valueOf(request.getParameter("angsurKe")), "edit"));
+                        jsonAngsuran = gson.toJson(dao.getRecord(np, Integer.parseInt(request.getParameter("angsurKe")), "edit"));
                  } 
                  response.setContentType("application/json");
                  out.println(jsonAngsuran);
                  System.out.println("np : "+np);
+             }
+             else if (page.equals("tambah")) {
+                 Angsuran angsur = new Angsuran();
+                 angsur.setNoPinjaman(request.getParameter("noPinjaman"));
+                 angsur.setAngsurKe(Integer.parseInt(request.getParameter("angsurKe")));
+                 angsur.setTglAngsur(request.getParameter("tglAngsur"));
+                 angsur.setBesarAngsur(Double.valueOf(request.getParameter("besarAngsur")));
+                 angsur.setSisaPinjaman(Double.valueOf(request.getParameter("sisaPinjaman")));
+                 angsur.setNoKaryawan(request.getParameter("noKaryawan"));
+                 System.out.println("taggl angsur : "+request.getParameter("tglAngsur"));
+                 dao.simpanData(angsur, page);
+                 
+                 response.setContentType("text/html;charset=UTF-8");
+                 out.print("Data Berhasil disimpan");
+             }
+             else if (page.equals("edit")) {
+                 Angsuran angsur = new Angsuran();
+                 angsur.setNoPinjaman(request.getParameter("noPinjaman"));
+                 angsur.setAngsurKe(Integer.parseInt(request.getParameter("angsurKe")));
+                 angsur.setTglAngsur(request.getParameter("tglAngsur"));
+                 angsur.setNoKaryawan(request.getParameter("noKaryawan"));
+                 
+                 dao.simpanData(angsur, page);
+                 
+                 response.setContentType("text/html;charset=UTF-8");
+                 out.print("Data Berhasil diupdate");
              }
     }
 

@@ -131,12 +131,14 @@ public class AngsuranDao {
                     
                 } 
                 else {
+                    
+                    if (type.equals("add")) {
                     // jika pertama kali angsuran
-                    String newSql = "SELECT pinjaman.*, (angsurpokok+angsurbunga) AS besarangsur ,anggota.nama AS namaanggota, karyawan.nama AS namakaryawan "
+                    String newSql = "SELECT pinjaman.*, (angsurpokok+angsurbunga) AS besarangsur ,( pokokpinjaman+bungapinjaman-(angsurpokok+angsurbunga) ) AS sisapinjaman, anggota.nama AS namaanggota, karyawan.nama AS namakaryawan "
                             + "FROM pinjaman, anggota, karyawan"
                             + " WHERE pinjaman.noanggota=anggota.noanggota AND pinjaman.accpetugas=karyawan.nik AND pinjaman.nopinjaman=?";
                     try {
-                        preSmt = koneksi.prepareStatement(sql);
+                        preSmt = koneksi.prepareStatement(newSql);
                         preSmt.setString(1, np);
                         rs = preSmt.executeQuery();
                         if (rs.next()) {
@@ -146,11 +148,14 @@ public class AngsuranDao {
                             angsuran.setNamaKaryawan(rs.getString("namakaryawan"));
                             angsuran.setNoAnggota(rs.getString("noanggota"));
                             angsuran.setNamaAnggota(rs.getString("namaanggota"));
+                            angsuran.setBesarAngsur(rs.getDouble("besarangsur"));
+                            angsuran.setJumlahAngsur(1);
+                            angsuran.setSisaPinjaman(rs.getDouble("sisapinjaman"));
                         }
                     } catch (SQLException e) {
                         System.out.println("gagal get record1 : "+e);
                     }
-                    
+                    }
                     
                 }
                 System.out.println("nopinjaman : "+angsuran.getNoPinjaman());
@@ -164,10 +169,55 @@ public class AngsuranDao {
             return angsuran;
         }
         
+        public void simpanData(Angsuran angsur, String page){
+            String sqlSimpan = null;
+            if (page.equals("edit")){
+                sqlSimpan = "update angsuran set tglangsur=?, nokaryawan=? where nopinjaman=? and angsurke=?";
+                try {
+                    preSmt = koneksi.prepareStatement(sqlSimpan);
+                    System.out.println("updating data .............");
+                    preSmt.setString(1,angsur.getTglAngsur());
+                    preSmt.setString(2,angsur.getNoKaryawan());
+                    preSmt.setString(3,angsur.getNoPinjaman());
+                    preSmt.setInt(4,angsur.getAngsurKe());
+                    preSmt.executeUpdate();
+                    
+                    System.out.println("page : "+page);
+                    System.out.println("nopinjaman : "+angsur.getNoPinjaman());
+                                  
+                }
+                catch (SQLException se){
+                    System.out.println("error add or update : " + se);
+                }
+            }
+            else if (page.equals("tambah")){
+                sqlSimpan = "insert into angsuran (nopinjaman, angsurke, tglangsur, besarangsur, sisapinjaman, nokaryawan) " +
+                        "values (?,?,?,?,?,?)";
+                System.out.println("adding data .............");
+                try {
+                    preSmt = koneksi.prepareStatement(sqlSimpan);
+                    preSmt.setString(1,angsur.getNoPinjaman());
+                    preSmt.setInt(2,angsur.getAngsurKe());
+                    preSmt.setString(3,angsur.getTglAngsur());
+                    preSmt.setDouble(4,angsur.getBesarAngsur());
+                    preSmt.setDouble(5,angsur.getSisaPinjaman());
+                    preSmt.setString(6,angsur.getNoKaryawan());
+                    preSmt.executeUpdate();
+                    
+                    System.out.println("page : "+page);
+                    System.out.println("nopinjaman : "+angsur.getNoPinjaman());
+                    
+                }
+                catch (SQLException se){
+                    System.out.println("error add or update : " + se);
+                }
+            }
+            
+        }
         public static void main(String[] args) {
             AngsuranDao dao = new AngsuranDao();
 //            System.out.println(dao.getRecord("P-12", 0, "add").getNoPinjaman());
-            System.out.println(dao.getRecord("P-16", 0, "add"));
+            System.out.println(dao.getRecord("P-15", 0, "add"));
 //            System.out.println(dao.getRecord("P-12", 0, "add").getBesarAngsur());
         }
 }
