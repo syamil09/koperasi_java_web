@@ -20,7 +20,16 @@ public class Angsuran {
     private String noAnggota;
     private String namaAnggota;
     private int jumlahAngsur;
+    private boolean isLast;
 
+    public boolean isIsLast() {
+        return isLast;
+    }
+
+    public void setIsLast(boolean isLast) {
+        this.isLast = isLast;
+    }
+    
     public int getJumlahAngsur() {
         return jumlahAngsur;
     }

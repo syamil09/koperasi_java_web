@@ -33,13 +33,14 @@ public class AngsuranDao {
         
         public ArrayList<Angsuran> getAllAngsuran() {
             ArrayList<Angsuran> listAngsuran = new ArrayList<>();
-            
+//            (SELECT pinjaman.lamapinjaman FROM pinjaman WHERE pinjaman.nopinjaman=angsuran.nopinjaman ) AS akhir
             try {
-                String sql = "SELECT angsuran.*, pinjaman.noanggota, anggota.nama AS namaanggota, karyawan.nama AS namakaryawan "
-                                  +"FROM angsuran, pinjaman, anggota, karyawan "
-                                  +"WHERE angsuran.nopinjaman=pinjaman.nopinjaman AND "
-                                            + "pinjaman.noanggota=anggota.noanggota AND "
-                                            + "angsuran.nokaryawan=karyawan.nik";
+                String sql = "SELECT angsuran.*, pinjaman.noanggota, anggota.nama AS namaanggota, karyawan.nama AS namakaryawan, t2.akhir " +
+                                    "FROM angsuran, pinjaman, anggota, karyawan, (SELECT nopinjaman,count(*) AS akhir FROM angsuran GROUP BY nopinjaman ) AS t2 " +
+                                    "WHERE angsuran.nopinjaman=pinjaman.nopinjaman AND" +
+                                        " pinjaman.noanggota=anggota.noanggota AND" +
+                                        " angsuran.nokaryawan=karyawan.nik AND" +
+                                        " angsuran.nopinjaman=t2.nopinjaman";
                 preSmt = koneksi.prepareStatement(sql);
                 rs = preSmt.executeQuery();
                 while(rs.next()){
@@ -55,7 +56,7 @@ public class AngsuranDao {
                     angsuran.setNamaKaryawan(rs.getString("namakaryawan"));
                     angsuran.setNoAnggota(rs.getString("noanggota"));
                     angsuran.setNamaAnggota(rs.getString("namaanggota"));
-                    
+                    angsuran.setIsLast( rs.getInt("angsurke") == rs.getInt("akhir") ? true : false );
                     listAngsuran.add(angsuran);
                 }
                 
@@ -78,7 +79,7 @@ public class AngsuranDao {
             Angsuran angsuran = new Angsuran();
             
             // jika sudah pernah angsuran
-            String sql = "SELECT angsuran.*, pinjaman.noanggota, pokokpinjaman, bungapinjaman, angsurpokok, angsurbunga, anggota.nama AS namaanggota, karyawan.nama AS namakaryawan, s1.jumlahangsur "
+            String sql = "SELECT angsuran.*, pinjaman.noanggota, lamapinjaman, pokokpinjaman, bungapinjaman, angsurpokok, angsurbunga, anggota.nama AS namaanggota, karyawan.nama AS namakaryawan, s1.jumlahangsur "
                     + "FROM angsuran, pinjaman, anggota, karyawan, (SELECT COUNT(*) AS jumlahangsur FROM angsuran WHERE nopinjaman=?) s1 "
                     + "WHERE angsuran.nopinjaman=pinjaman.nopinjaman AND "
                                 + "pinjaman.noanggota=anggota.noanggota AND "
@@ -102,6 +103,11 @@ public class AngsuranDao {
                 rs = preSmt.executeQuery();
                 
                 if (rs.next()) {
+                    //  cek jika sudah lunas
+                    if (rs.getInt("angsurke") == rs.getInt("lamapinjaman")) {
+                        return null;
+                    }
+                    
                     double besarAngsuran = 0,sisaPinjaman = 0;
                     int angsurKeDb = rs.getInt("angsurke");
                     if (type.equals("add")) {         

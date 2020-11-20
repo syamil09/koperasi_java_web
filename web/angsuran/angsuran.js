@@ -45,13 +45,21 @@ $.ajax({
                     }
                 },
                 {data:'namaKaryawan'},
-                {'data': null, 'className': 'dt-right', 'orderable': false, 'mRender': function(o){
-                        return "<a class='btn btn-outline-warning btn-sm'"
+                {data: 'isLast', defaultContent: '', 'className': 'dt-right', 'orderable': false, 
+                    render: {
+                        display: function(data, type, row){
+                        console.log('is last '+row.isLast)
+                        if (row.isLast) {
+                            return "<a class='btn btn-outline-warning btn-sm'"
                                     + "id = 'btnEdit'>Edit</a>"
                                     + "&nbsp;&nbsp;"
                                     + "<a class='btn btn-outline-danger btn-sm' "
                                     + "id='btnDel'>Hapus</a>";
                         }
+                        
+                        }
+                    }
+                            
                 }
             ]
         })
@@ -123,6 +131,28 @@ $("#btnSave").click(function() {
          });
 
 
+//Delete Data
+$('#tabelangsuran tbody').on('click', '#btnDel', function() {
+             // get nik when clicked btn in the current row
+             let baris = $(this).closest('tr');
+             let np = baris.find("td:eq(0)").text();
+             let angsuranKe = baris.find("td:eq(1)").text();
+             page = 'hapus';
+             console.log(np);
+             if (confirm(`Anda yakin data  : ${np}, Angsuran Ke-${angsuranKe} akan dihapus ?`)) {
+                 $.post("/PBO_koperasi/AngsuranCtr", {
+                        page: page,
+                        noPinjaman: np,
+                        angsurKe: angsuranKe
+                 },
+                 function(data, status) {
+                     alert(data);
+                     location.reload();
+                 });
+
+             }
+         });
+
 // Fill data
 function viewData(np, angsurke, type) {
     $.ajax({
@@ -136,21 +166,26 @@ function viewData(np, angsurke, type) {
             type: type
         },
         success: function(data) {
-//            let sisaPinjaman = ()
-            $("#noAnggota").val(data.noAnggota);
-            $("#namaAnggota").val(data.namaAnggota);
-            $("#besarAngsuran").val(data.besarAngsur);
-            $("#besarAngsuranRp").val( formatRupiah(data.besarAngsur.toString(), 'Rp. ') );
-            $("#angsurKe").val(data.jumlahAngsur);
-            $("#sisaPinjaman").val(data.sisaPinjaman);
-            $("#sisaPinjamanRp").val( formatRupiah(data.sisaPinjaman.toString(), 'Rp. ') );
-            if (type == "edit") {
-                $("#noPinjaman").val(data.noPinjaman);
-                $("#noKaryawan").val(data.noKaryawan);
-                $("#namaKaryawan").val(data.namaKaryawan);
-                $("#tglAngsuran").val(data.tglAngsur);
+            // cek jika null maka pinjaman sudah selesai/lunas
+            if (data == null) {
+                alert("Pinjaman ini sudah selesai!\nTidak bisa lagi menambah angsuran.");
             }
-            console.log(data);
+            else {      
+                $("#noAnggota").val(data.noAnggota);
+                $("#namaAnggota").val(data.namaAnggota);
+                $("#besarAngsuran").val(data.besarAngsur);
+                $("#besarAngsuranRp").val( formatRupiah(data.besarAngsur.toString(), 'Rp. ') );
+                $("#angsurKe").val(data.jumlahAngsur);
+                $("#sisaPinjaman").val(data.sisaPinjaman);
+                $("#sisaPinjamanRp").val( formatRupiah(data.sisaPinjaman.toString(), 'Rp. ') );
+                if (type == "edit") {
+                    $("#noPinjaman").val(data.noPinjaman);
+                    $("#noKaryawan").val(data.noKaryawan);
+                    $("#namaKaryawan").val(data.namaKaryawan);
+                    $("#tglAngsuran").val(data.tglAngsur);
+                }
+                console.log(data);
+            }
         }
     })
 }

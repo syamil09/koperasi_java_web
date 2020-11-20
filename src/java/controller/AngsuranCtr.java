@@ -87,6 +87,12 @@ public class AngsuranCtr extends HttpServlet {
                  response.setContentType("text/html;charset=UTF-8");
                  out.print("Data Berhasil diupdate");
              }
+             else if ("hapus".equals(page)) {
+                dao.hapusData( request.getParameter("noPinjaman"), Integer.parseInt(request.getParameter("angsurKe")) );
+
+                response.setContentType("text/html;charset=UTF-8");
+                    out.print("Data Berhasil dihapus");
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
