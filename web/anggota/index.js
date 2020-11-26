@@ -45,7 +45,7 @@ $(document).ready(function() {
                                         + "id = 'btnEdit'>Edit</a>"
                                         + "&nbsp;&nbsp;"
                                         + "<a class='btn btn-outline-danger btn-sm' "
-                                        + "id='btnDel'>Hapus</a>";
+                                        + "id='btnDel''>Hapus</a>";
                                     }
                                 }
                             ]

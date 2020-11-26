@@ -237,7 +237,8 @@ public class AngsuranDao {
         public static void main(String[] args) {
             AngsuranDao dao = new AngsuranDao();
 //            System.out.println(dao.getRecord("P-12", 0, "add").getNoPinjaman());
-            System.out.println(dao.getRecord("P-15", 0, "add"));
+//            System.out.println(dao.getRecord("P-15", 0, "add"));
 //            System.out.println(dao.getRecord("P-12", 0, "add").getBesarAngsur());
+            System.out.println("all data angsuran : "+dao.getAllAngsuran());
         }
 }

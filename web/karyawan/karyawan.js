@@ -69,7 +69,7 @@ $(document).ready(function() {
         dataType: "json",
         success:
             function(data){
-                    $("#tabelkaryawan").dataTable({
+                    $("#tabelkaryawan").DataTable({
                     serverside: true,
                     processing: true,
                     data: data,
@@ -85,10 +85,10 @@ $(document).ready(function() {
                             {'data': 'telepon'},
                             {'data': null, 'className': 'dt-right', 'mRender': function(o){
                                     return "<a class='btn btn-outline-warning btn-sm'"
-                                    + "id = 'btnEdit'>Edit</a>"
+                                    + "id = 'btnEdit' href='#'>Edit</a>"
                                     + "&nbsp;&nbsp;"
                                     + "<a class='btn btn-outline-danger btn-sm' "
-                                    + "id='btnDel'>Hapus</a>";
+                                    + "id='btnDel' href='#'>Hapus</a>";
                                 }
                             }
                         ]
