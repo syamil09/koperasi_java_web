@@ -12,12 +12,13 @@
   <title>SB Admin 2 - Login</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../sb-admin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+  <link href="../sb-admin2/css/sb-admin-2.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="login.js"></script>
 </head>
 
 <body class="bg-gradient-primary">
@@ -41,7 +42,7 @@
                   </div>
                   <form class="user">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="userId" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="text" class="form-control form-control-user" id="userId" aria-describedby="emailHelp" placeholder="user id...">
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" id="password" placeholder="Password">
@@ -52,9 +53,9 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>-->
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    <button type="submit" class="btn btn-primary btn-user btn-block" id="btnLogin">
                       Login
-                    </a>
+                    </button>
 
                   </form>
 <!--                  <hr>
@@ -77,15 +78,16 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--<script src="../sb-admin2/vendor/jquery/jquery.min.js"></script>-->
+  <!--<script src="../sb-admin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!--<script src="../sb-admin2/vendor/jquery-easing/jquery.easing.min.js"></script>-->
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="../sb-admin2/js/sb-admin-2.min.js"></script>
 
+ 
 </body>
 
 </html>
