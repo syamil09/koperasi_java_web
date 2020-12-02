@@ -5,7 +5,6 @@
  */
 $(document).ready(function() {
     var na, nama, gender, tmpLahir, tglLahir, alamat, telepon, page;
-        
         // save value from view to variable        
         function getInputValue(){
                 na = $("#noAnggota").val();

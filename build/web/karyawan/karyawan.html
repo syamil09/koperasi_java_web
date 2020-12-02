@@ -25,6 +25,7 @@
 <!--        <script src="https://cdjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
   <!--<script src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>-->
+  <script type="text/javascript" src="../home.js"></script>
   <script type="text/javascript" src="karyawan.js"></script>
 </head>
 
@@ -62,55 +63,44 @@
         Interface
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-<!--       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
-      </li> -->
-
-
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
+      <li class="nav-item" id="menuUser">
         <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-fw fa-users"></i>
           <span>User</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="/PBO_koperasi/sb-admin2/karyawan.html">
-          <i class="fas fa-fw fa-table"></i>
+      <li class="nav-item" id="menuKaryawan">
+        <a class="nav-link" href="/PBO_koperasi/karyawan/karyawan.html">
+          <i class="fas fa-fw fa-users"></i>
           <span>Karyawan</span></a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/PBO_koperasi/sb-admin2/anggota.html">
-          <i class="fas fa-fw fa-table"></i>
+      <li class="nav-item" id="menuAnggota">
+        <a class="nav-link" href="/PBO_koperasi/anggota/anggota.html">
+          <i class="fas fa-fw fa-users"></i>
           <span>Anggota</span></a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" id="menuPinjaman">
         <a class="nav-link" href="/PBO_koperasi/pinjaman/index.html">
           <i class="fas fa-fw fa-table"></i>
           <span>Pinjaman</span></a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" id="menuAnggsuran">
         <a class="nav-link" href="/PBO_koperasi/angsuran/index.html">
           <i class="fas fa-fw fa-table"></i>
           <span>Angsuran</span></a>
       </li>
-
-
+      
+      <li class="nav-item" id="btnLogout">
+        <a class="nav-link" href="#">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Logout</span></a>
+      </li>
+      
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -129,12 +119,17 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow row">
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
+          
+          <div class="d-sm-flex align-items-center justify-content-between col-12">
+            <span class="mb-0 text-gray-600" id="welcome">Anda masuk sebagain admin</span>
+            <span class="mb-0 text-gray-600" id="welcomeNama">Dashboard</span>
+          </div>
         </nav>
         <!-- End of Topbar -->
 

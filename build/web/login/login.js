@@ -11,10 +11,7 @@ $(document).ready(function() {
         console.log("klik login");
         userid = $('#userId').val();
         password = $('#password').val();
-        btnLogin.attr('disabled','disabled');
-        btnLogin.html(`
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp Login...
-                        `);
+        
         if (userid === "") {
             alert("user id harus diisi!");
             $("#userId").focus();
@@ -22,6 +19,10 @@ $(document).ready(function() {
             alert("password harus diisi!");
             $('#password').focus();
         } else {
+            btnLogin.attr('disabled','disabled');
+            btnLogin.html(`
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp Login...
+                        `);
         $.post('/PBO_koperasi/UserCtr',{
             page: 'login',
             userid: userid, 
@@ -35,9 +36,6 @@ $(document).ready(function() {
                 if (typeof data !== "string") {
                     alert("Berhasil Login");
                     sessionStorage.setItem("data", JSON.stringify(data) );
-//                    $.session.set("nik", data.nik);
-//                    $.session.set("level", data.level);
-//                    $.session.set("nama", data.nama);
                     window.location.href = "/PBO_koperasi/index.html";
 //                    location.reload();
                 } else if (data === "gagal") {

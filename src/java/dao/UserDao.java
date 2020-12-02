@@ -96,16 +96,12 @@ public class UserDao {
                 rs.last();
                 System.out.println("password sama : "+BCrypt.checkpw(password, rs.getString("password")));
                 if (rs.getRow() == 1) {
-                    if (rs.getString("aktif").equals("T")) {
-                        return "blokir";
-                    }
+                    
                     if (BCrypt.checkpw(password, rs.getString("password"))) {
+                        if (rs.getString("aktif").equals("T")) {
+                            return "blokir";
+                        }
                         System.out.println("berhasil login");
-//                        usr.setUserId(userid);
-//                        usr.setAktif(rs.getString("aktif"));
-//                        usr.setLevel(rs.getString("level"));
-//                        usr.setNik(rs.getString("nik"));
-//                        usr.setNama(rs.getString("nama"));
                         return "berhasil";
                     } else {
                         System.out.println("password salah");
